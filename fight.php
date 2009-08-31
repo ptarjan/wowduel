@@ -15,6 +15,19 @@ $safe_chars = array(
 </head>
 <body>
 <?php
+$url = "http://www.wowarmory.com/character-sheet.xml?" .
+    http_build_query(array("n" => $chars[0][0], "r" => $chars[0][1]));
+
+$ch = curl_init($url);
+curl_setopt_array($ch, array(
+    CURLOPT_RETURNTRANSFER => True,
+    CURLOPT_USERAGENT => "WowDuel ( http://paulisageek.com/wowduel/ ) Firefox/3.0",
+));
+$data = curl_exec($ch);
+
+print $url;
+print_r($data);
+
 ?>
 </body>
 <html>
