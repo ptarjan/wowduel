@@ -25,9 +25,24 @@ curl_setopt_array($ch, array(
 ));
 $data = curl_exec($ch);
 
-print $url;
-print_r($data);
+$xml = simplexml_load_string($data);
+$level = $xml->characterInfo->character['level'];
+$ilevel = 0;
+foreach ($xml->characterInfo->characterTab->items->children() as $item) {
+    $id = (string) $item['id'];
+    $url = "http://www.wowarmory.com/item-info.xml?" .
+        http_build_query(array("i" => $id));
+    $ch = curl_init($url);
+    curl_setopt_array($ch, array(
+        CURLOPT_RETURNTRANSFER => True,
+        CURLOPT_USERAGENT => "WowDuel ( http://paulisageek.com/wowduel/ ) Firefox/3.0",
+    ));
+    $data = curl_exec($ch);
 
+    $item_info = simplexml_load_string($data);
+    $ilevel += $item_info->itemInfo->item["level"];
+}
+print $ilevel;
 ?>
 </body>
 <html>
