@@ -19,9 +19,9 @@
             <tr><td>
                 Server
             </td><td>
-                <input name="left_guild" value="Mal'Ganis" />
+                <input name="left_server" value="Mal'Ganis" />
             </td><td>
-                <input name="right_guild" value="Mal'Ganis" />
+                <input name="right_server" value="Mal'Ganis" />
             </td></tr>
             <tr><td></td><td>
                 <input type="submit" value="Fight!" />
