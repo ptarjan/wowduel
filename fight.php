@@ -15,23 +15,15 @@ $safe_chars = array(
 </head>
 <body>
 <?php
-$url = "http://www.wowarmory.com/character-sheet.xml?" .
-    http_build_query(array("n" => $chars[0][0], "r" => $chars[0][1]));
 
-$ch = curl_init($url);
-curl_setopt_array($ch, array(
-    CURLOPT_RETURNTRANSFER => True,
-    CURLOPT_USERAGENT => "WowDuel ( http://paulisageek.com/wowduel/ ) Firefox/3.0",
-));
-$data = curl_exec($ch);
+function get_char_url($n, $r) {
+    return "http://www.wowarmory.com/character-sheet.xml?" .
+        http_build_query(array("n" => $n, "r" => $r));
+}
 
-$xml = simplexml_load_string($data);
-$level = $xml->characterInfo->character['level'];
-$ilevel = 0;
-foreach ($xml->characterInfo->characterTab->items->children() as $item) {
-    $id = (string) $item['id'];
-    $url = "http://www.wowarmory.com/item-info.xml?" .
-        http_build_query(array("i" => $id));
+function get_char_info($n, $r) {
+    $url = get_char_url($n, $r);
+
     $ch = curl_init($url);
     curl_setopt_array($ch, array(
         CURLOPT_RETURNTRANSFER => True,
@@ -39,10 +31,55 @@ foreach ($xml->characterInfo->characterTab->items->children() as $item) {
     ));
     $data = curl_exec($ch);
 
-    $item_info = simplexml_load_string($data);
-    $ilevel += $item_info->itemInfo->item["level"];
+    $xml = simplexml_load_string($data);
+    $ilevel = 0;
+    foreach ($xml->characterInfo->characterTab->items->children() as $item) {
+        $id = (string) $item['id'];
+        $url = "http://www.wowarmory.com/item-info.xml?" .
+            http_build_query(array("i" => $id));
+        $ch = curl_init($url);
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => True,
+            CURLOPT_USERAGENT => "WowDuel ( http://paulisageek.com/wowduel/ ) Firefox/3.0",
+        ));
+        $data = curl_exec($ch);
+
+        $item_info = simplexml_load_string($data);
+        $ilevel += $item_info->itemInfo->item["level"];
+    }
+    return array($xml, $ilevel);
 }
-print $ilevel;
+
+$left = get_char_info($chars[0][0], $chars[0][1]);
+$right = get_char_info($chars[1][0], $chars[1][1]);
+
 ?>
+<div id="left">
+    <h1><a href="<?php print get_char_url($chars[0][0], $chars[0][1]) ?>"><?php print "{$safe_chars[0][0]}, {$safe_chars[0][1]}" ?></a></h1>
+    <p>Level: <?php print $left[1] ?></p>
+    <ul>
+<?php 
+foreach ($left[0]->characterInfo->characterTab->items->children() as $item) {
+?>
+    <li><img src="http://www.wowarmory.com/wow-icons/_images/51x51/<?php print htmlspecialchars($item['icon']) ?>.jpg" /></li>
+<?php
+}
+?>
+    </ul>
+</div>
+
+<div id="right">
+    <h1><a href="<?php print get_char_url($chars[1][0], $chars[1][1]) ?>"><?php print "{$safe_chars[1][0]}, {$safe_chars[1][1]}" ?></a></h1>
+    <p>Level: <?php print $left[1] ?></p>
+    <ul>
+<?php 
+foreach ($right[0]->characterInfo->characterTab->items->children() as $item) {
+?>
+    <li><img src="http://www.wowarmory.com/wow-icons/_images/51x51/<?php print htmlspecialchars($item['icon']) ?>.jpg" /></li>
+<?php
+}
+?>
+    </ul>
+</div>
 </body>
 <html>
