@@ -34,6 +34,7 @@ a img {
 .character {
     padding : 20px;
     margin-top : 10px;
+    clear : both;
 }
 
 .character h1, #char_select {
