@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Wow Duel - Who will win?</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
     <h1>Wow Duel - Who will win?</h1>
