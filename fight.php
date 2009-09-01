@@ -77,7 +77,10 @@ function get_char_info($n, $r) {
 
     $xml = simplexml_load_string($data);
     $ilevel = 0;
-    foreach ($xml->characterInfo->characterTab->items->children() as $item) {
+    $items = $xml->characterInfo->characterTab->items;
+    if (! $items) return false;
+
+    foreach ($items->children() as $item) {
         $id = (string) $item['id'];
         $url = "http://www.wowarmory.com/item-info.xml?" .
             http_build_query(array("i" => $id));
@@ -98,7 +101,13 @@ function compare($left, $right) {
 }
 
 $left = get_char_info($chars[0][0], $chars[0][1]);
+if (!$left) {
+    die("<h1>Can't find {$safe_names[0]}</h1>");
+}
 $right = get_char_info($chars[1][0], $chars[1][1]);
+if (!$right) {
+    die("<h1>Can't find {$safe_names[1]}</h1>");
+}
 
 switch (compare($left, $right)) {
     case -1 : $status = "{$safe_names[1]} Wins!"; break;
