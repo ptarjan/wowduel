@@ -20,9 +20,9 @@
                 <input name="left_server" value="Mal'Ganis" />
             </td></tr>
             <tr><td>
-                <input name="right_server" value="Mal'Ganis" />
-            </td><td>
                 <input name="right_name" value="Ariesz" />
+            </td><td>
+                <input name="right_server" value="Mal'Ganis" />
             </td></tr>
             <tr><td colspan="2">
                 <input type="submit" value="Fight!" />
