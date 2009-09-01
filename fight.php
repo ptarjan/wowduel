@@ -16,6 +16,7 @@ $safe_names = array(
 <html>
 <head>
     <title>Duel - <?php print "{$safe_names[0]} vs {$safe_names[1]}" ?></title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
 <?php
@@ -83,7 +84,7 @@ switch (compare($left, $right)) {
 <?php 
 foreach ($left[0]->characterInfo->characterTab->items->children() as $item) {
 ?>
-    <li><img src="http://www.wowarmory.com/wow-icons/_images/51x51/<?php print htmlspecialchars($item['icon']) ?>.jpg" /></li>
+    <li><a href="http://www.wowhead.com/?item=<?php print $item['id'] ?>"><img src="http://www.wowarmory.com/wow-icons/_images/51x51/<?php print htmlspecialchars($item['icon']) ?>.jpg" /></a></li>
 <?php
 }
 ?>
@@ -97,11 +98,12 @@ foreach ($left[0]->characterInfo->characterTab->items->children() as $item) {
 <?php 
 foreach ($right[0]->characterInfo->characterTab->items->children() as $item) {
 ?>
-    <li><img src="http://www.wowarmory.com/wow-icons/_images/51x51/<?php print htmlspecialchars($item['icon']) ?>.jpg" /></li>
+    <li><a href="http://www.wowhead.com/?item=<?php print $item['id'] ?>"><img src="http://www.wowarmory.com/wow-icons/_images/51x51/<?php print htmlspecialchars($item['icon']) ?>.jpg" /></a></li>
 <?php
 }
 ?>
     </ul>
 </div>
+<script src="http://static.wowhead.com/widgets/power.js"></script>
 </body>
 <html>

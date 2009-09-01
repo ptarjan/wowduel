@@ -1,0 +1,38 @@
+a img {
+    border : 0px;
+}
+
+#status {
+    font-size : 8em;
+    text-align : center;
+    padding : 20px;
+    background : #DEF;
+    border : #345 3px solid;
+}
+
+#left, #right {
+    padding : 20px;
+    margin-top : 10px;
+}
+#left {
+    float : left;
+    background : #AAF;
+    border : #55F 3px solid;
+}
+
+#right {
+    float : right;
+    background : #FAA;
+    border : #F55 3px solid;
+}
+
+#left ul, #right ul {
+    padding : 0px;    
+}
+
+#left li, #right li {
+    float : left;
+    padding : 5px;
+    list-style-type : none;
+}
+
