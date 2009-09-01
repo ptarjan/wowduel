@@ -1,5 +1,14 @@
 /* INDEX */
 
+body {
+    background : url(http://www.wowarmory.com/images/theme/wrath/bg.jpg) no-repeat black;
+    color : white;
+}
+
+h1 {
+    text-align : center;
+}
+
 input {
     padding : 5px;
     border : 1px solid #DDD;
@@ -7,6 +16,7 @@ input {
 
 #char_select {
     text-align : center;
+    margin: auto;
 }
 
 /* FIGHT */
@@ -16,34 +26,32 @@ a img {
 }
 
 #status {
-    font-size : 8em;
+    font-size : 3em;
     text-align : center;
     padding : 20px;
-    background : #DEF;
-    border : #345 3px solid;
 }
 
-#left, #right {
+.character {
     padding : 20px;
     margin-top : 10px;
 }
-#left {
-    float : left;
-    background : #AAF;
-    border : #55F 3px solid;
+
+.character h1, #char_select {
+    background : #111;
+    border : white 2px solid;
+    padding : 20px;
+    -moz-border-radius : 20px;
 }
 
-#right {
-    float : right;
-    background : #FAA;
-    border : #F55 3px solid;
+.character a {
+    color : white;
 }
 
-#left ul, #right ul {
+.character ul {
     padding : 0px;    
 }
 
-#left li, #right li {
+.character li {
     float : left;
     padding : 5px;
     list-style-type : none;
