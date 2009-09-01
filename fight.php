@@ -21,6 +21,51 @@ $safe_names = array(
 <body>
 <?php
 
+function cache($url,$ttl,$prefix='', &$headers) {
+    $tmpdir = '/var/tmp/wowduel/';
+    if (!is_dir($tmpdir)) mkdir($tmpdir);
+    $headers = array();
+    $tmp = $tmpdir.$prefix.md5($url);
+    if(file_exists($tmp)) $st = stat($tmp);
+    else $st = false;
+    if(!$st || $st && ($st['mtime']<($_SERVER['REQUEST_TIME']-$ttl))) {
+        if($st) touch($tmp);
+
+        $opts = array(
+          'http'=>array(
+            'timeout' => 10,
+            'max_redirects' => 10,
+            'user_agent' => "wowduel/1.0 (http://paulisageek.com/wowduel/) Firefox/3.0",
+          )
+        );
+
+        $context = stream_context_create($opts);
+
+        $stream = fopen($url,'r', false, $context);
+        if(!$stream) {
+          if($st) return $tmp;
+          return false;
+        }
+        $tmpf = tempnam($tmpdir,'tmp');
+        $tmpstream = fopen($tmpf, 'w');
+        $bytes = stream_copy_to_stream($stream, $tmpstream, 1000001);
+        if ($bytes == 1000001)
+            throw new Exception("Documents larger than 1000000 bytes are unsupported");
+
+        $meta = (stream_get_meta_data($stream));
+        $headers = $meta['wrapper_data'];
+        fclose($stream);
+
+        fclose($tmpstream);
+        rename($tmpf, $tmp);
+    } else $bytes = $st['size'];
+    return file_get_contents($tmp);
+}
+
+function fetch($url) {
+    return cache($url, 60 * 5, '', $headers);
+}
+
 function get_char_url($n, $r) {
     return "http://www.wowarmory.com/character-sheet.xml?" .
         http_build_query(array("n" => $n, "r" => $r));
@@ -28,13 +73,7 @@ function get_char_url($n, $r) {
 
 function get_char_info($n, $r) {
     $url = get_char_url($n, $r);
-
-    $ch = curl_init($url);
-    curl_setopt_array($ch, array(
-        CURLOPT_RETURNTRANSFER => True,
-        CURLOPT_USERAGENT => "WowDuel ( http://paulisageek.com/wowduel/ ) Firefox/3.0",
-    ));
-    $data = curl_exec($ch);
+    $data = fetch($url);
 
     $xml = simplexml_load_string($data);
     $ilevel = 0;
@@ -42,12 +81,7 @@ function get_char_info($n, $r) {
         $id = (string) $item['id'];
         $url = "http://www.wowarmory.com/item-info.xml?" .
             http_build_query(array("i" => $id));
-        $ch = curl_init($url);
-        curl_setopt_array($ch, array(
-            CURLOPT_RETURNTRANSFER => True,
-            CURLOPT_USERAGENT => "WowDuel ( http://paulisageek.com/wowduel/ ) Firefox/3.0",
-        ));
-        $data = curl_exec($ch);
+        $data = fetch($url);
 
         $item_info = simplexml_load_string($data);
         $ilevel += $item_info->itemInfo->item["level"];
