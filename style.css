@@ -5,6 +5,10 @@ input {
     border : 1px solid #DDD;
 }
 
+#char_select {
+    text-align : center;
+}
+
 /* FIGHT */
 
 a img {
