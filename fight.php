@@ -111,7 +111,7 @@ switch (compare($left, $right)) {
 <div id="status">
     <?php print $status ?>
 </div>
-<div id="left">
+<div id="left" class="character">
     <h1><a href="<?php print get_char_url($chars[0][0], $chars[0][1]) ?>"><?php print "{$safe_names[0]}" ?></a></h1>
     <p>Level: <?php print $left[1] ?></p>
     <ul>
@@ -125,7 +125,7 @@ foreach ($left[0]->characterInfo->characterTab->items->children() as $item) {
     </ul>
 </div>
 
-<div id="right">
+<div id="right" class="character">
     <h1><a href="<?php print get_char_url($chars[1][0], $chars[1][1]) ?>"><?php print "{$safe_names[1]}" ?></a></h1>
     <p>Level: <?php print $right[1] ?></p>
     <ul>
