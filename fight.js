@@ -9,7 +9,7 @@ Y.on("submit", fight, "form");
 function fight(e) {
     // Don't do the form submit
     e.halt();
-    Y.get("#result").setStyle("display", "hidden");
+    Y.get("#result").setStyle("display", "none");
 
     var data = new Y.yql('use "http://paulisageek.com/wowduel/wowduel.xml" ; select * from wowduel where left_name="' + Y.get('[name="left_name"]').get("value") + '" AND left_server="' + Y.get('[name="left_server"]').get("value") + '" AND right_name="' + Y.get('[name="right_name"]').get("value") + '" AND right_server="' + Y.get('[name="right_server"]').get("value") + '"');
     data.on('query', function(r) {
