@@ -29,6 +29,7 @@ a img {
     font-size : 3em;
     text-align : center;
     padding : 20px;
+    margin : 20px;
 }
 
 .character {
@@ -37,7 +38,7 @@ a img {
     clear : both;
 }
 
-.character h1, #char_select {
+.character h1, #char_select, #status {
     background : #111;
     border : white 2px solid;
     padding : 20px;
