@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<table xmlns="http://query.yahooapis.com/v1/schema/table.xsd">
+  <meta>
+    <sampleQuery>select * from {table} where left_name="Vosk" AND left_server="Mal'Ganis" AND right_name="Ariesz" AND right_server="Mal'Ganis"</sampleQuery>
+  </meta>
+  <bindings>
+    <select itemPath="" produces="XML">
+      <urls>
+        <url></url>
+      </urls>
+      <inputs>
+        <key id='left_name' type='xs:string' paramType='query' required="true" />
+        <key id='right_name' type='xs:string' paramType='query' required="true" />
+        <key id='left_server' type='xs:string' paramType='query' required="true" />
+        <key id='right_server' type='xs:string' paramType='query' required="true" />
+      </inputs>
+      <execute><![CDATA[
+function get_char_url(r, n) {
+    return "http://www.wowarmory.com/character-sheet.xml?" +
+            "n=" + (n) + "&r=" + (r);
+}
+
+var agent = "http://paulisageek.com/wowduel/ Firefox/3.0";
+
+function char_info(r, n) {
+    var response = y.rest(get_char_url(r, n))
+     .header("User-Agent", agent)
+     .get().response;
+
+    var ilevel = 0;
+    var items = response.characterInfo.characterTab.items.item;
+    var ret = []
+    var item_icons = [];
+    for each (var item in items) {
+        var id = item.@id;
+        item_icons.push({"icon" : item.@icon.toString(), "id" : id.toString()});
+        var url = "http://www.wowarmory.com/item-info.xml?" +
+            "i=" + encodeURIComponent(id);
+
+        var item_info = y.rest(url).header("User-Agent", agent).get().response;
+        
+        ilevel += parseInt(item_info.itemInfo.item.@level);
+    }
+    return {"items" : item_icons, "ilevel" : ilevel};
+}
+
+response.object = {
+    "left": char_info(left_server, left_name),
+    "right" : char_info(right_server, right_name),
+}
+      ]]></execute>
+    </select>
+  </bindings>
+</table>
