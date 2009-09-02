@@ -9,15 +9,15 @@
         <url></url>
       </urls>
       <inputs>
-        <key id='left_name' type='xs:string' paramType='query' required="true" />
-        <key id='right_name' type='xs:string' paramType='query' required="true" />
-        <key id='left_server' type='xs:string' paramType='query' required="true" />
-        <key id='right_server' type='xs:string' paramType='query' required="true" />
+        <key id='left_name' type='xs:string' paramType='variable' required="true" />
+        <key id='right_name' type='xs:string' paramType='variable' required="true" />
+        <key id='left_server' type='xs:string' paramType='variable' required="true" />
+        <key id='right_server' type='xs:string' paramType='variable' required="true" />
       </inputs>
       <execute><![CDATA[
 function get_char_url(r, n) {
     return "http://www.wowarmory.com/character-sheet.xml?" +
-            "n=" + (n) + "&r=" + (r);
+            "n=" + encodeURIComponent(n) + "&r=" + encodeURIComponent(r);
 }
 
 var agent = "http://paulisageek.com/wowduel/ Firefox/3.0";
