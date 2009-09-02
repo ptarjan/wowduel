@@ -41,7 +41,7 @@ function char_info(r, n) {
         
         ilevel += parseInt(item_info.itemInfo.item.@level);
     }
-    return {"items" : item_icons, "ilevel" : ilevel};
+    return {"items" : item_icons, "ilevel" : ilevel, "url" : get_char_url(r, n), "name" : n + ", " + r};
 }
 
 response.object = {
